@@ -135,11 +135,12 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
                     "QToolButton:hover { background-color: rgb(62,62,62); border-color: rgb(12,175,165); border-style: outset; border-width: 1px; border-radius: 5px; padding: 6px}"                    
                     "QToolButton:checked { color: rgb(108,200,239); background-color: rgb(31,31,31); border-color: rgb(108,200,239); border-style: outset; border-width: 1px; border-radius: 5px; padding: 6px}"
                     //"QScrollBar:disabled { background-color: rgb(32,32,32) }"
-                    "QAction::Menu { background-color: rgb(0,255,0); }"
+                    "QMenu:item:selected { background-color: rgb(31,31,31); }"
                     "QPushButton { background-color: rgb(15,15,15); color: rgb(12,175,165); border-width: 1px; "
                     "padding: 6px; border-style: outset; border-radius: 5px ; border-color: rgb(12,175,165)}"
                 );
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
+    QApplication::setStyle("plastique");
 #ifdef ENABLE_WALLET
     enableWallet = WalletModel::isWalletEnabled();
 #endif // ENABLE_WALLET
