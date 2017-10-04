@@ -142,7 +142,6 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
     QString appstyle = "cleanlooks";
     QApplication::setStyle(appstyle);                
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
-    QApplication::setStyle("plastique");
 #ifdef ENABLE_WALLET
     enableWallet = WalletModel::isWalletEnabled();
 #endif // ENABLE_WALLET
