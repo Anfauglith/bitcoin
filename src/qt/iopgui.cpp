@@ -139,8 +139,9 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
                     "QPushButton { background-color: rgb(15,15,15); color: rgb(12,175,165); border-width: 1px; "
                     "padding: 6px; border-style: outset; border-radius: 5px ; border-color: rgb(12,175,165)}"
                 );
+    QString appstyle = "cleanlooks";
+    QApplication::setStyle(appstyle);                
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
-    QApplication::setStyle("plastique");
 #ifdef ENABLE_WALLET
     enableWallet = WalletModel::isWalletEnabled();
 #endif // ENABLE_WALLET
