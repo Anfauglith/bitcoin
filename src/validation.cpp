@@ -1866,8 +1866,12 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
      // check if whitelist functionality is activated.
     bool fIsMinerWhitelist = pindex->nHeight > chainparams.GetConsensus().minerWhiteListActivationHeight;
      
-    if (fIsMinerWhitelist){
-        //LogPrintf("Whitelist activated: Checking for Miner Signature.\n");
+    // get height of last checkpoint
+    CBlockIndex* pcheckpoint = Checkpoints::GetLastCheckpoint(chainparams.Checkpoints());
+    bool fCheckMinerSig = pindex->nHeight > pcheckpoint->nHeight;
+
+    if (fIsMinerWhitelist && fCheckMinerSig ){
+        LogPrintf("Whitelist activated: Checking for Miner Signature.\n");
         // first transaction is coinbase with only one input
         const CTransaction &tx = *(block.vtx[0]);
         const CScript scriptSig = tx.vin[0].scriptSig;
