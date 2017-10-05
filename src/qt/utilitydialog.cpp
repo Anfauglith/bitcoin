@@ -164,6 +164,13 @@ void HelpMessageDialog::on_okButton_accepted()
 ShutdownWindow::ShutdownWindow(QWidget *parent, Qt::WindowFlags f):
     QWidget(parent, f)
 {
+    setStyleSheet("QWidget {background-color: rgb(15,15,15); alternate-background-color: rgb(31,31,31); "
+    "color: rgb(12,175,165); }"
+    "QHeaderView { background-color: rgb(31,31,31)} "
+    "QIcon:checked { background-color: rgb(255,0,0) }"
+    "QPushButton { background-color: rgb(15,15,15); color: rgb(12,175,165); border-width: 1px; "
+    "padding: 6px; border-style: outset; border-radius: 5px ; border-color: rgb(12,175,165)}"
+);
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(new QLabel(
         tr("%1 is shutting down...").arg(tr(PACKAGE_NAME)) + "<br /><br />" +
