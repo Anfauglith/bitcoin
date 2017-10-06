@@ -94,7 +94,7 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
             colorbase = colorHighlightFg;
         singleColor = colorbase;
         */
-        singleColor = QColor(108,200,239);
+        singleColor = QColor(12,175,165);
     }
     // Determine text color
     textColor = QColor(12,175,165);

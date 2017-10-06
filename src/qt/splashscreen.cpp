@@ -49,17 +49,18 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 
     // create a bitmap according to device pixelratio
     QSize splashSize(480*devicePixelRatio,320*devicePixelRatio);
-    
+    pixmap = QPixmap(splashSize);
+
     // set reference point, paddings relative to size
     int paddingRight            = 50;
     int vSpace                  = 10;
     int paddingTop              = splashSize.height()*0.5 - vSpace;
-       pixmap = QPixmap(splashSize);
+    
 
-#if QT_VERSION > 0x050100
+//#if QT_VERSION > 0x050100
     // change to HiDPI if it makes sense
-    pixmap.setDevicePixelRatio(devicePixelRatio);   /////////////////////// MAYBE IOS HEADER FIX HERE ////////////////////////////
-#endif
+    //pixmap.setDevicePixelRatio(devicePixelRatio);   /////////////////////// MAYBE IOS HEADER FIX HERE ////////////////////////////
+//#endif
 
     setStyleSheet("color: rgb(12,175,165)");
     QPainter pixPaint(&pixmap);
@@ -67,11 +68,8 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 
     // draw the iop icon, expected size of PNG: 1024x1024
     QRect rectIcon(QPoint(0,0), QSize(480,320));
-    
-        const QSize requiredSize(1024,1024);
-        QPixmap icon(":/icons/iop_header");
-    
-        pixPaint.drawPixmap(rectIcon, icon);
+    QPixmap icon(":/icons/iop_header");  
+    pixPaint.drawPixmap(rectIcon, icon);
 
     
     // draw a slightly radial gradient
@@ -100,7 +98,6 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     fm = pixPaint.fontMetrics();
     int textHeight = fm.height();    
     pixPaint.drawText(pixmap.width()/2/devicePixelRatio-fm.width(versionText)/2,paddingTop+textHeight+vSpace,versionText);
-
 
     // draw copyright stuff
     {

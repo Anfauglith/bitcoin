@@ -12,7 +12,7 @@
   </property>
   <property name="styleSheet">
           <string>
-                  #SendCoins { border: none }
+                  #SendCoins { border: solid; border-width: 1px; border-color: rgb(119,119,119); }
                   #messageLabel { border: none }
                   #line { border: none }</string>
   </property>
