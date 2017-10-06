@@ -29,10 +29,8 @@
 SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) :
     QWidget(0, f), curAlignment(0)
 {
-    // set reference point, paddings
-    int paddingRight            = 50;
-    int paddingTop              = 150;
-    int titleVersionVSpace      = 20;
+
+    
     //int titleCopyrightVSpace    = 40;
 
     float fontFactor            = 1.0;
@@ -51,26 +49,33 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 
     // create a bitmap according to device pixelratio
     QSize splashSize(480*devicePixelRatio,320*devicePixelRatio);
-    pixmap = QPixmap(splashSize);
+    
+    // set reference point, paddings relative to size
+    int paddingRight            = 50;
+    int vSpace                  = 10;
+    int paddingTop              = splashSize.height()*0.5 - vSpace;
+       pixmap = QPixmap(splashSize);
 
 #if QT_VERSION > 0x050100
     // change to HiDPI if it makes sense
-    pixmap.setDevicePixelRatio(devicePixelRatio);
+    pixmap.setDevicePixelRatio(devicePixelRatio);   /////////////////////// MAYBE IOS HEADER FIX HERE ////////////////////////////
 #endif
+
     setStyleSheet("color: rgb(12,175,165)");
     QPainter pixPaint(&pixmap);
     pixPaint.setPen(QColor(12,175,165));
 
     // draw the iop icon, expected size of PNG: 1024x1024
-    QRect rectIcon(QPoint(0,0), QSize(480*devicePixelRatio,320*devicePixelRatio));
+    QRect rectIcon(QPoint(0,0), QSize(480,320));
     
         const QSize requiredSize(1024,1024);
         QPixmap icon(":/icons/iop_header");
     
         pixPaint.drawPixmap(rectIcon, icon);
 
+    
     // draw a slightly radial gradient
-    QRadialGradient gradient(QPoint(0,0), splashSize.width()/devicePixelRatio);
+    QRadialGradient gradient(QPoint(splashSize.width()/2,50), splashSize.width()/devicePixelRatio);
     gradient.setColorAt(0, QColor(15,15,15,100));
     gradient.setColorAt(1, QColor(15,15,15,100));
     QRect rGradient(QPoint(0,0), splashSize);
@@ -87,26 +92,24 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     pixPaint.setFont(QFont(font, 33*fontFactor));
     fm = pixPaint.fontMetrics();
     titleTextWidth  = fm.width(titleText);
+
     pixPaint.drawText(pixmap.width()/2/devicePixelRatio-titleTextWidth/2,paddingTop,titleText);
-
+    
+    //draw version stuff
     pixPaint.setFont(QFont(font, 15*fontFactor));
-
-    // if the version string is to long, reduce size
     fm = pixPaint.fontMetrics();
-    /*int versionTextWidth  = fm.width(versionText);
-    if(versionTextWidth > titleTextWidth+paddingRight-10) {
-        pixPaint.setFont(QFont(font, 10*fontFactor));
-        titleVersionVSpace -= 5;
-    }*/
-    pixPaint.drawText(pixmap.width()/2/devicePixelRatio-fm.width(versionText)/2,paddingTop+titleVersionVSpace,versionText);
+    int textHeight = fm.height();    
+    pixPaint.drawText(pixmap.width()/2/devicePixelRatio-fm.width(versionText)/2,paddingTop+textHeight+vSpace,versionText);
+
 
     // draw copyright stuff
     {
         pixPaint.setFont(QFont(font, 10*fontFactor));
+        textHeight += fm.height();
         const int x = paddingRight;//pixmap.width()/2/devicePixelRatio;
-        const int y = paddingTop;
+        const int y = paddingTop + textHeight + vSpace;  //paddingTop;
         QRect copyrightRect(x, y, pixmap.width() - x - paddingRight, pixmap.height() - y);
-        pixPaint.drawText(copyrightRect, Qt::AlignCenter | Qt::AlignTop, copyrightText);
+        pixPaint.drawText(copyrightRect, Qt::AlignHCenter | Qt::AlignTop, copyrightText);
     }
 
     // draw additional text if special network

@@ -808,6 +808,9 @@
         </item>
         <item>
          <widget class="QFrame" name="frameFeeSelection">
+         <property name="styleSheet">
+               <string> #frameFeeSelection { border: none }</string>
+             </property>
           <layout class="QVBoxLayout" name="verticalLayoutFee12">
            <property name="spacing">
             <number>0</number>

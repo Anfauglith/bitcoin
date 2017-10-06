@@ -124,23 +124,40 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
     platformStyle(_platformStyle)
 {
     GUIUtil::restoreWindowGeometry("nWindow", QSize(850, 550), this);
-    //setStyleSheet("QWidget {background: rgb(15,15,15); alternate-background-color: rgb(20,20,20); color: rgb(12,175,165)} QPushButton { background-color: qlineargradient(x1:0, y1:0, x2: 0.5, y2: 0, x3: 1, y3: 0, stop: 0 rgb(108,200,239), stop: 1 rgb(102,204,204), stop: 2 rgb(12,175,165)); color: rgb(15,15,15); border: 2px solid rgb(12,175,165); }");
-    //setStyleSheet("QWidget {background-color: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:0.5, stop:0 rgb(31,31,31), stop:1 rgb(15,15,15)) ; alternate-background-color: rgb(20,20,20); color: rgb(12,175,165)} QPushButton { background-color: rgb(108,200,239); color: rgb(15,15,15); }");    
-    setStyleSheet("QFrame { background-color: rgb(31,31,31); }"
-                    "QWidget {background-color: rgb(15,15,15); alternate-background-color: rgb(31,31,31); "
-                    "color: rgb(12,175,165); }"
-                    "QHeaderView { background-color: rgb(31,31,31)} "
-                    "QTableView { selection-background-color: rgb(62,62,62); selection-color: rgb(108,200,239) }"
-                    "QToolButton { background-color: rgb(15,15,15); border-color: rgb(12,175,165); border-style: outset; border-width: 1px; border-radius: 5px; padding: 6px; margin: 3px}"
-                    "QToolButton:hover { background-color: rgb(62,62,62); border-color: rgb(12,175,165); border-style: outset; border-width: 1px; border-radius: 5px; padding: 6px}"                    
-                    "QToolButton:checked { color: rgb(108,200,239); background-color: rgb(31,31,31); border-color: rgb(108,200,239); border-style: outset; border-width: 1px; border-radius: 5px; padding: 6px}"
-                    //"QScrollBar:disabled { background-color: rgb(32,32,32) }"
-                    "QMenu:item:selected { background-color: rgb(31,31,31); }"
-                    "QPushButton { background-color: rgb(15,15,15); color: rgb(12,175,165); border-width: 1px; "
-                    "padding: 6px; border-style: outset; border-radius: 5px ; border-color: rgb(12,175,165)}"
+    //setStyleSheet("QWidget {background: rgb(45,45,45); alternate-background-color: rgb(20,20,20); color: rgb(12,175,165)} QPushButton { background-color: qlineargradient(x1:0, y1:0, x2: 0.5, y2: 0, x3: 1, y3: 0, stop: 0 rgb(108,200,239), stop: 1 rgb(102,204,204), stop: 2 rgb(12,175,165)); color: rgb(45,45,45); border: 2px solid rgb(12,175,165); }");
+    //setStyleSheet("QWidget {background-color: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:0.5, stop:0 rgb(31,31,31), stop:1 rgb(45,45,45)) ; alternate-background-color: rgb(20,20,20); color: rgb(12,175,165)} QPushButton { background-color: rgb(108,200,239); color: rgb(45,45,45); }");    
+    QString appstyle = "fusion";
+    QApplication::setStyle(appstyle);  
+    setStyleSheet("QFrame { background: rgb(31,31,31); alternate-background-color: rgb(31,31,31);}"
+                    "QWidget {background: rgb(45,45,45); color: rgb(12,175,165); }"
+                    "QHeaderView { background: rgb(31,31,31)} "
+                    "QLineEdit { background: rgb(31,31,31); border-style: solid; border-width: 1px;  border-color: rgb(31,31,31) }"
+                    "QAbstractSpinBox { background: rgb(31,31,31); border-style: solid; border-width: 1px;  border-color: rgb(31,31,31); padding: 0px }"
+                    "QSpinBox::down-button:off {width: 30px; border: solid }"
+                    "QComboBox { background: rgb(31,31,31); }"
+                    //"QSpinBox::down-button { subcontrol-origin: border; subcontrol-position: center; width: 16px; border-color: rgb(32,32,32); border-width: 1px;}"
+                    "QAbstractSpinBox::up-arrow { border: none; padding: 0; width: 7px; height: 7px; image: url(:/icons/up_arrow) }"
+                    "QAbstractSpinBox::down-arrow { border: none; padding: 0; width: 7px; height: 7px; image: url(:/icons/down_arrow) }"                    
+                    "QAbstractSpinBox::up-arrow:off { border: none; padding: 0; width: 7px; height: 7px; image: url(:/icons/up_arrow_off) }"                    
+                    "QAbstractSpinBox::down-arrow:off { border: none; padding: 0; width: 7px; height: 7px; image: url(:/icons/down_arrow_off) }"                    
+                    ".QFrame { border-style: solid; border-width: 1px;  border-color: rgb(31,31,31) }"
+                    //"QLabel { border-style: none; border-width: 1px;  border-color: rgb(31,31,31) }"
+                    "QTableView { selection-background-color: rgb(62,62,62); selection-color: rgb(108,200,239); alternate-background: rgb(31,31,31); }"
+                    "RecentRequestsTableModel::item { selection-background: rgb(62,62,62); selection-color: rgb(108,200,239); alternate-background: rgb(31,31,31); }"
+                    "QToolButton { background: rgb(45,45,45); border-color: rgb(12,175,165); border-style: solid; border-width: 1px; border-radius: 5px; padding: 6px; margin: 3px}"
+                    "QToolButton:hover { background: rgb(62,62,62); border-color: rgb(12,175,165); border-style: solid; border-width: 1px; border-radius: 5px; padding: 6px}"                    
+                    "QToolButton:checked { color: rgb(108,200,239); background: rgb(31,31,31); border-color: rgb(108,200,239); border-style: solid; border-width: 1px; border-radius: 5px; padding: 6px}"
+                    "QScrollBar {border: 2px solid rgb(62,62,62); background: rgb(32,32,32); margin: 0px 20px 0 20px;}"
+                    "QScrollBar::handle { background: rgb(62,62,62); }"
+                    //"QCheckBox::indicator { background: rgb(31,31,31); }"
+                    "QMenu:item:selected { color: rgb(108,200,239); background: rgb(31,31,31); }"
+                    "QMenuBar:item:selected { color: rgb(108,200,239); background: rgb(31,31,31); }"
+                    "QPushButton { background: rgb(45,45,45); color: rgb(12,175,165); border-width: 1px; padding: 6px; border-style: solid; border-radius: 5px ; border-color: rgb(12,175,165)}"
+                    "QPushButton:hover { background: rgb(31,31,31); }"
+                    "QProgressBar { background: rgb(45,45,45); color: rgb(62,62,62); border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; }" 
+                    "QProgressBar::chunk { background: qlineargradient(x1:0, y1:0, x2: 0.5, y2: 0, x3: 1, y3: 0, stop: 0 rgb(108,200,239), stop: 1 rgb(102,204,204), stop: 2 rgb(12,175,165)); color: rgb(45,45,45); border-radius: 7px; margin: 0px; }"
                 );
-    QString appstyle = "cleanlooks";
-    QApplication::setStyle(appstyle);                
+                 
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
 #ifdef ENABLE_WALLET
     enableWallet = WalletModel::isWalletEnabled();
@@ -244,7 +261,7 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
     QString curStyle = QApplication::style()->metaObject()->className();
     if(curStyle == "QWindowsStyle" || curStyle == "QWindowsXPStyle")
     {
-        progressBar->setStyleSheet("QProgressBar { background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
+        //progressBar->setStyleSheet("QProgressBar { background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
     }
 
     statusBar()->addWidget(progressBarLabel);
