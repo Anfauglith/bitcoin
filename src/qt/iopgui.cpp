@@ -156,8 +156,8 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
                     "QMenuBar:item:selected { color: rgb(108,200,239); background: rgb(31,31,31); }"
                     "QPushButton { background: rgb(45,45,45); color: rgb(12,175,165); border-width: 1px; padding: 6px; border-style: solid; border-radius: 5px ; border-color: rgb(12,175,165)}"
                     "QPushButton:hover { background: rgb(31,31,31); }"
-                    "QProgressBar { background: rgb(62,62,62); color: rgb(62,62,62); border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; }" 
-                    "QProgressBar::chunk { background: qlineargradient(x1:0, y1:0, x2: 0.5, y2: 0, x3: 1, y3: 0, stop: 0 rgb(108,200,239), stop: 1 rgb(102,204,204), stop: 2 rgb(12,175,165)); color: rgb(45,45,45); border-radius: 7px; margin: 0px; }"
+                    "QProgressBar {color: rgb(31,31,31); background: rgb(62,62,62);  border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; }" 
+                    "QProgressBar::chunk {color: rgb(31,31,31); background: qlineargradient(x1:0, y1:0, x2: 0.5, y2: 0, x3: 1, y3: 0, stop: 0 rgb(108,200,239), stop: 1 rgb(102,204,204), stop: 2 rgb(12,175,165)); border-radius: 7px; margin: 0px; }"
                 );
                  
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
