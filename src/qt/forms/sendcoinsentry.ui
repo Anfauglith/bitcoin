@@ -10,6 +10,12 @@
     <height>150</height>
    </rect>
   </property>
+  <property name="styleSheet">
+          <string>
+                  #SendCoins { border: solid; border-width: 1px; border-color: rgb(119,119,119); }
+                  #messageLabel { border: none }
+                  #line { border: none }</string>
+  </property>
   <property name="focusPolicy">
    <enum>Qt::TabFocus</enum>
   </property>
@@ -65,6 +71,9 @@
        <widget class="QToolButton" name="addressBookButton">
         <property name="toolTip">
          <string>Choose previously used address</string>
+        </property>
+        <property name="styleSheet">
+          <string>marquee-left: 10px</string>
         </property>
         <property name="text">
          <string/>
@@ -169,6 +178,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="checkboxSubtractFeeFromAmount">
+        <property name="styleSheet">
+          <string>padding-left: 10px; </string>
+        </property>
         <property name="toolTip">
          <string>The fee will be deducted from the amount being sent. The recipient will receive less iops than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</string>
         </property>

@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Send Coins</string>
   </property>
+  <property name="styleSheet">
+          <string>
+                  #scrollArea { border: none }
+          </string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
    <property name="bottomMargin">
     <number>8</number>
@@ -808,6 +813,9 @@
         </item>
         <item>
          <widget class="QFrame" name="frameFeeSelection">
+         <property name="styleSheet">
+               <string> #frameFeeSelection { border: none }</string>
+             </property>
           <layout class="QVBoxLayout" name="verticalLayoutFee12">
            <property name="spacing">
             <number>0</number>

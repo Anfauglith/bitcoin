@@ -50,8 +50,9 @@
       <item>
        <widget class="QWidget" name="contentWidget" native="true">
         <property name="styleSheet">
-         <string notr="true">#contentWidget { background: rgba(15,15,15,240); border-radius: 6px; }
-                    QPushButton { background-color: rgb(15,15,15); color: rgb(12,175,165); border-width: 1px; padding: 6px; border-style: outset; border-radius: 5px ; border-color: rgb(12,175,165); }
+         <string notr="true">#contentWidget { background: rgba(45,45,45); border-radius: 6px; }
+                    QPushButton { background-color: rgb(45,45,45); color: rgb(12,175,165); border-width: 1px; padding: 6px; border-style: outset; border-radius: 5px ; border-color: rgb(12,175,165); }
+                    QPushButton:hover { background: rgb(31,31,31); }; 
                     </string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayoutSub" stretch="1,0,0,0">
