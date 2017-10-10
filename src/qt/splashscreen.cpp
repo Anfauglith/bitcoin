@@ -54,12 +54,12 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     // set reference point, paddings relative to size
     int paddingRight            = 50;
     int vSpace                  = 10;
-    int paddingTop              = splashSize.height()*0.5 - vSpace;
+    int paddingTop              = 320*0.5 - vSpace;
     
 
 //#if QT_VERSION > 0x050100
     // change to HiDPI if it makes sense
-    //pixmap.setDevicePixelRatio(devicePixelRatio);   /////////////////////// MAYBE IOS HEADER FIX HERE ////////////////////////////
+    pixmap.setDevicePixelRatio(devicePixelRatio);   /////////////////////// MAYBE IOS HEADER FIX HERE ////////////////////////////
 //#endif
 
     setStyleSheet("color: rgb(12,175,165)");
