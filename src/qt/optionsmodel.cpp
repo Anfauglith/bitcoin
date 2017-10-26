@@ -81,6 +81,8 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("fCoinControlFeatures", false);
     fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 
+    if (!settings.contains("ioptheme"))
+        settings.setValue("ioptheme", "dark");
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
     //
@@ -147,7 +149,7 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("language", "");
     if (!gArgs.SoftSetArg("-lang", settings.value("language").toString().toStdString()))
         addOverriddenOption("-lang");
-
+    
     language = settings.value("language").toString();
 }
 
@@ -247,6 +249,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("nThreadsScriptVerif");
         case Listen:
             return settings.value("fListen");
+        case Theme:
+            return settings.value("ioptheme");
         default:
             return QVariant();
         }
@@ -358,6 +362,12 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
 #endif
         case DisplayUnit:
             setDisplayUnit(value);
+            break;
+        case Theme:
+            if (settings.value("ioptheme") != value) {
+                settings.setValue("ioptheme", value);
+                setRestartRequired(true);
+            }
             break;
         case ThirdPartyTxUrls:
             if (strThirdPartyTxUrls != value.toString()) {

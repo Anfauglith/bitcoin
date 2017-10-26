@@ -47,6 +47,7 @@ public:
         SpendZeroConfChange,    // bool
         Listen,                 // bool
         OptionIDRowCount,
+        Theme                   //QString
     };
 
     void Init(bool resetSettings = false);

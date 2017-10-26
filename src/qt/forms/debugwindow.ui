@@ -12,6 +12,8 @@
   </property>
   <property name="styleSheet">
          <string notr="true">QWidget { background: rgba(45,45,45); color: rgb(12,175,165); }</string>
+         QTableView { border: 1px solid rgb(119,119,119); selection-background-color: rgb(62,62,62); selection-color: rgb(108,200,239); alternate-background: rgb(31,31,31); }
+                    "QTableView::item { border-right: 1px solid rgb(119,119,119); border-bottom: 1px solid rgb(119,119,119);}</string>
   </property>
   <property name="windowTitle">
    <string>Debug window</string>

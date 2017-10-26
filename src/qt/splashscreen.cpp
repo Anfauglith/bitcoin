@@ -55,7 +55,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     int paddingRight            = 50;
     int vSpace                  = 10;
     int paddingTop              = 320*0.5 - vSpace;
-    
+    //float iconHeight              = 86;
 
 //#if QT_VERSION > 0x050100
     // change to HiDPI if it makes sense
@@ -67,18 +67,22 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     pixPaint.setPen(QColor(12,175,165));
 
     // draw the iop icon, expected size of PNG: 1024x1024
-    QRect rectIcon(QPoint(0,0), QSize(480,320));
-    QPixmap icon(":/icons/iop_header");  
-    pixPaint.drawPixmap(rectIcon, icon);
-
+    QRect rectHeader(QPoint(0,0), QSize(480,320));
+    QPixmap header(":/icons/iop_header");  
+    pixPaint.drawPixmap(rectHeader, header);
+    //QPixmap icon(":/icons/iop");
+    //QRect rectIcon(QPoint(240-icon.width()*(iconHeight/icon.height()/2),20), QSize(icon.width()*(iconHeight/icon.height()),iconHeight));  
+    //pixPaint.drawPixmap(rectIcon, icon);
     
+    /*
     // draw a slightly radial gradient
     QRadialGradient gradient(QPoint(splashSize.width()/2,50), splashSize.width()/devicePixelRatio);
     gradient.setColorAt(0, QColor(15,15,15,100));
     gradient.setColorAt(1, QColor(15,15,15,100));
     QRect rGradient(QPoint(0,0), splashSize);
     pixPaint.fillRect(rGradient, gradient);
-    
+    */
+
     // check font size and drawing with
     pixPaint.setFont(QFont(font, 33*fontFactor));
     QFontMetrics fm = pixPaint.fontMetrics();

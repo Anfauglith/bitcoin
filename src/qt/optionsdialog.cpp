@@ -113,7 +113,9 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 #endif
 
     ui->unit->setModel(new IoPUnits(this));
-
+    ui->theme->addItem(QString("light"), QVariant(QString("light")));
+    ui->theme->addItem(QString("dark"), QVariant(QString("dark")));
+    
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);
     mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -169,6 +171,7 @@ void OptionsDialog::setModel(OptionsModel *_model)
     /* Display */
     connect(ui->lang, SIGNAL(valueChanged()), this, SLOT(showRestartWarning()));
     connect(ui->thirdPartyTxUrls, SIGNAL(textChanged(const QString &)), this, SLOT(showRestartWarning()));
+    connect(ui->theme, SIGNAL(valueChanged()), this, SLOT(showRestartWarning()));
 }
 
 void OptionsDialog::setMapper()
@@ -205,6 +208,7 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->lang, OptionsModel::Language);
     mapper->addMapping(ui->unit, OptionsModel::DisplayUnit);
     mapper->addMapping(ui->thirdPartyTxUrls, OptionsModel::ThirdPartyTxUrls);
+    mapper->addMapping(ui->theme, OptionsModel::Theme);
 }
 
 void OptionsDialog::setOkButtonState(bool fState)

@@ -128,6 +128,8 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
     //setStyleSheet("QWidget {background-color: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:0.5, stop:0 rgb(31,31,31), stop:1 rgb(45,45,45)) ; alternate-background-color: rgb(20,20,20); color: rgb(12,175,165)} QPushButton { background-color: rgb(108,200,239); color: rgb(45,45,45); }");    
     QString appstyle = "fusion";
     QApplication::setStyle(appstyle);  
+    if(settings.value("ioptheme").toString() == "light")
+    {  
     setStyleSheet("QFrame { background: rgb(31,31,31); alternate-background-color: rgb(31,31,31);}"
                     "QWidget {background: rgb(45,45,45); color: rgb(12,175,165); }"
                     "QHeaderView { background: rgb(31,31,31)} "
@@ -161,6 +163,8 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
                 );
                  
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
+    }             
+    QString windowTitle = tr(PACKAGE_NAME) + " - " + settings.value("ioptheme").toString();
 #ifdef ENABLE_WALLET
     enableWallet = WalletModel::isWalletEnabled();
 #endif // ENABLE_WALLET
