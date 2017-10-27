@@ -125,11 +125,12 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
     platformStyle(_platformStyle)
 {
     GUIUtil::restoreWindowGeometry("nWindow", QSize(850, 550), this);
-    QString appstyle = "fusion";
-    QApplication::setStyle(appstyle);  
+    
     QSettings settings;
     if(settings.value("theme").toString() == "dark")
-    {  
+    {
+    QString appstyle = "fusion";
+    QApplication::setStyle(appstyle);    
     setStyleSheet("QFrame { background: rgb(31,31,31); alternate-background-color: rgb(31,31,31);}"
                     "QWidget {background: rgb(45,45,45); color: rgb(12,175,165); }"
                     "QHeaderView { background: rgb(31,31,31)} "
@@ -160,6 +161,7 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
                     "QPushButton:hover { background: rgb(31,31,31); }"
                     "QProgressBar {color: rgb(31,31,31); background: rgb(62,62,62);  border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; }" 
                     "QProgressBar::chunk {color: rgb(31,31,31); background: qlineargradient(x1:0, y1:0, x2: 0.5, y2: 0, x3: 1, y3: 0, stop: 0 rgb(108,200,239), stop: 1 rgb(102,204,204), stop: 2 rgb(12,175,165)); border-radius: 7px; margin: 0px; }"
+                    "#iopLogo:hover { background: rgb(45,45,45); }"
                 );
     }     
                      

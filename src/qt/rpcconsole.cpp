@@ -429,6 +429,15 @@ RPCConsole::RPCConsole(const PlatformStyle *_platformStyle, QWidget *parent) :
 {
     ui->setupUi(this);
     GUIUtil::restoreWindowGeometry("nRPCConsoleWindow", this->size(), this);
+    QSettings settings;
+    if(settings.value("theme").toString() == "dark")
+    {  
+        setStyleSheet(
+            "QWidget { background: rgba(45,45,45); color: rgb(12,175,165); }"
+            "QTableView { border: 1px solid rgb(119,119,119); selection-background-color: rgb(62,62,62); selection-color: rgb(108,200,239); alternate-background: rgb(31,31,31); }"
+            "QTableView::item { border-right: 1px solid rgb(119,119,119); border-bottom: 1px solid rgb(119,119,119);}"
+        );
+    }
 
     ui->openDebugLogfileButton->setToolTip(ui->openDebugLogfileButton->toolTip().arg(tr(PACKAGE_NAME)));
 
@@ -466,7 +475,7 @@ RPCConsole::RPCConsole(const PlatformStyle *_platformStyle, QWidget *parent) :
     ui->detailWidget->hide();
     ui->peerHeading->setText(tr("Select a peer to view detailed information."));
 
-    QSettings settings;
+    //QSettings settings;   // Declared earlier for theme
     consoleFontSize = settings.value(fontSizeSettingsKey, QFontInfo(QFont()).pointSize()).toInt();
     clear();
 }
