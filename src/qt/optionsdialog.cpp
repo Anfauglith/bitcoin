@@ -81,7 +81,11 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->iopAtStartup->setText(ui->iopAtStartup->text().arg(tr(PACKAGE_NAME)));
 
     ui->lang->setToolTip(ui->lang->toolTip().arg(tr(PACKAGE_NAME)));
+    ui->theme->setToolTip(ui->lang->toolTip().arg(tr(PACKAGE_NAME)));  
+
     ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
+    ui->theme->addItem(tr("light"), QVariant("light"));
+    ui->theme->addItem(tr("dark"), QVariant("dark"));    
     for (const QString &langStr : translations.entryList())
     {
         QLocale locale(langStr);
@@ -92,9 +96,11 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 #if QT_VERSION >= 0x040800
             /** display language strings as "native language - native country (locale name)", e.g. "Deutsch - Deutschland (de)" */
             ui->lang->addItem(locale.nativeLanguageName() + QString(" - ") + locale.nativeCountryName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
+            //ui->theme->addItem(locale.nativeLanguageName() + QString(" - ") + locale.nativeCountryName() + QString(" (") + langStr + QString(")"), QVariant(langStr));          
 #else
             /** display language strings as "language - country (locale name)", e.g. "German - Germany (de)" */
             ui->lang->addItem(QLocale::languageToString(locale.language()) + QString(" - ") + QLocale::countryToString(locale.country()) + QString(" (") + langStr + QString(")"), QVariant(langStr));
+            //ui->theme->addItem(QLocale::languageToString(locale.language()) + QString(" - ") + QLocale::countryToString(locale.country()) + QString(" (") + langStr + QString(")"), QVariant(langStr));            
 #endif
         }
         else
@@ -102,9 +108,11 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 #if QT_VERSION >= 0x040800
             /** display language strings as "native language (locale name)", e.g. "Deutsch (de)" */
             ui->lang->addItem(locale.nativeLanguageName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
+            //ui->theme->addItem(locale.nativeLanguageName() + QString(" (") + langStr + QString(")"), QVariant(langStr));            
 #else
             /** display language strings as "language (locale name)", e.g. "German (de)" */
             ui->lang->addItem(QLocale::languageToString(locale.language()) + QString(" (") + langStr + QString(")"), QVariant(langStr));
+            //ui->theme->addItem(QLocale::languageToString(locale.language()) + QString(" (") + langStr + QString(")"), QVariant(langStr));            
 #endif
         }
     }
@@ -113,8 +121,8 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 #endif
 
     ui->unit->setModel(new IoPUnits(this));
-    ui->theme->addItem(QString("light"), QVariant(QString("light")));
-    ui->theme->addItem(QString("dark"), QVariant(QString("dark")));
+    //ui->theme->addItem(QString("light"), QVariant(QString("light")));
+    //ui->theme->addItem(QString("dark"), QVariant(QString("dark")));
     
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);
@@ -170,8 +178,9 @@ void OptionsDialog::setModel(OptionsModel *_model)
     connect(ui->connectSocksTor, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning()));
     /* Display */
     connect(ui->lang, SIGNAL(valueChanged()), this, SLOT(showRestartWarning()));
-    connect(ui->thirdPartyTxUrls, SIGNAL(textChanged(const QString &)), this, SLOT(showRestartWarning()));
     connect(ui->theme, SIGNAL(valueChanged()), this, SLOT(showRestartWarning()));
+    connect(ui->thirdPartyTxUrls, SIGNAL(textChanged(const QString &)), this, SLOT(showRestartWarning()));
+    
 }
 
 void OptionsDialog::setMapper()
@@ -206,9 +215,10 @@ void OptionsDialog::setMapper()
 
     /* Display */
     mapper->addMapping(ui->lang, OptionsModel::Language);
+    mapper->addMapping(ui->theme, OptionsModel::Theme);
     mapper->addMapping(ui->unit, OptionsModel::DisplayUnit);
     mapper->addMapping(ui->thirdPartyTxUrls, OptionsModel::ThirdPartyTxUrls);
-    mapper->addMapping(ui->theme, OptionsModel::Theme);
+    
 }
 
 void OptionsDialog::setOkButtonState(bool fState)

@@ -41,13 +41,13 @@ public:
         DisplayUnit,            // IoPUnits::Unit
         ThirdPartyTxUrls,       // QString
         Language,               // QString
+        Theme,                  // QString
         CoinControlFeatures,    // bool
         ThreadsScriptVerif,     // int
         DatabaseCache,          // int
         SpendZeroConfChange,    // bool
         Listen,                 // bool
         OptionIDRowCount,
-        Theme                   //QString
     };
 
     void Init(bool resetSettings = false);
@@ -79,6 +79,7 @@ private:
     bool fMinimizeToTray;
     bool fMinimizeOnClose;
     QString language;
+    QString theme;
     int nDisplayUnit;
     QString strThirdPartyTxUrls;
     bool fCoinControlFeatures;

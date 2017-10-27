@@ -130,7 +130,7 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
     QString appstyle = "fusion";
     QApplication::setStyle(appstyle);  
     QSettings settings;
-    if(settings.value("ioptheme").toString() == "light")
+    if(settings.value("theme").toString() == "dark")
     {  
     setStyleSheet("QFrame { background: rgb(31,31,31); alternate-background-color: rgb(31,31,31);}"
                     "QWidget {background: rgb(45,45,45); color: rgb(12,175,165); }"
@@ -166,7 +166,7 @@ IoPGUI::IoPGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkS
                  
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
     }             
-    QString windowTitle = tr(PACKAGE_NAME) + " - " + settings.value("ioptheme").toString();
+    QString windowTitle = tr(PACKAGE_NAME) + " - " + settings.value("theme").toString() + " ";
 #ifdef ENABLE_WALLET
     enableWallet = WalletModel::isWalletEnabled();
 #endif // ENABLE_WALLET
