@@ -81,6 +81,7 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("fCoinControlFeatures", false);
     fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 
+    
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
     //
@@ -147,8 +148,13 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("language", "");
     if (!gArgs.SoftSetArg("-lang", settings.value("language").toString().toStdString()))
         addOverriddenOption("-lang");
-
     language = settings.value("language").toString();
+
+    if (!settings.contains("theme"))
+        settings.setValue("theme", "light");
+    if (!gArgs.SoftSetArg("-theme", settings.value("theme").toString().toStdString()))
+        addOverriddenOption("-theme");
+    theme = settings.value("theme").toString();
 }
 
 void OptionsModel::Reset()
@@ -239,6 +245,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return strThirdPartyTxUrls;
         case Language:
             return settings.value("language");
+        case Theme:
+            return settings.value("theme");
         case CoinControlFeatures:
             return fCoinControlFeatures;
         case DatabaseCache:
@@ -372,6 +380,12 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
                 setRestartRequired(true);
             }
             break;
+        case Theme:
+            if (settings.value("theme") != value) {
+                settings.setValue("theme", value);
+                setRestartRequired(true);
+            }
+        break;
         case CoinControlFeatures:
             fCoinControlFeatures = value.toBool();
             settings.setValue("fCoinControlFeatures", fCoinControlFeatures);

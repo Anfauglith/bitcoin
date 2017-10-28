@@ -12,6 +12,7 @@
 #include <QImage>
 #include <QPalette>
 #include <QPixmap>
+#include <QSettings>
 
 static const struct {
     const char *platformId;
@@ -80,24 +81,29 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
     singleColor(0,0,0),
     textColor(0,0,0)
 {
-    // Determine icon highlighting color
-    if (colorizeIcons) {
-        /*
-        const QColor colorHighlightBg(QApplication::palette().color(QPalette::Highlight));
-        const QColor colorHighlightFg(QApplication::palette().color(QPalette::HighlightedText));
-        const QColor colorText(QApplication::palette().color(QPalette::WindowText));
-        const int colorTextLightness = colorText.lightness();
-        QColor colorbase;
-        if (abs(colorHighlightBg.lightness() - colorTextLightness) < abs(colorHighlightFg.lightness() - colorTextLightness))
-            colorbase = colorHighlightBg;
-        else
-            colorbase = colorHighlightFg;
-        singleColor = colorbase;
-        */
+    QSettings settings;
+    if(settings.value("theme").toString() == "dark")
+    {
+        // Set Darktheme colors
         singleColor = QColor(12,175,165);
+        textColor = QColor(12,175,165);        
+    } else {
+        // Determine icon highlighting color
+        if (colorizeIcons) {
+            const QColor colorHighlightBg(QApplication::palette().color(QPalette::Highlight));
+            const QColor colorHighlightFg(QApplication::palette().color(QPalette::HighlightedText));
+            const QColor colorText(QApplication::palette().color(QPalette::WindowText));
+            const int colorTextLightness = colorText.lightness();
+            QColor colorbase;
+            if (abs(colorHighlightBg.lightness() - colorTextLightness) < abs(colorHighlightFg.lightness() - colorTextLightness))
+                colorbase = colorHighlightBg;
+            else
+                colorbase = colorHighlightFg;
+            singleColor = colorbase;
+        }
+        // Determine text color
+        textColor = QColor(QApplication::palette().color(QPalette::WindowText));
     }
-    // Determine text color
-    textColor = QColor(12,175,165);
 }
 
 QImage PlatformStyle::SingleColorImage(const QString& filename) const

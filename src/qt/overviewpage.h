@@ -64,6 +64,7 @@ private Q_SLOTS:
     void handleTransactionClicked(const QModelIndex &index);
     void updateAlerts(const QString &warnings);
     void updateWatchOnlyLabels(bool showWatchOnly);
+    void handleLogoClicked();
     void handleOutOfSyncWarningClicks();
 };
 
