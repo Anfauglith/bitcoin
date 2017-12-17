@@ -174,7 +174,7 @@ void WalletModel::updateTransaction()
 }
 
 void WalletModel::updateAddressBook(const QString &address, const QString &label,
-        bool isMine, const QString &purpose, int status)
+        isminetype isMine, const QString &purpose, int status)
 {
     if(addressTableModel)
         addressTableModel->updateEntry(address, label, isMine, purpose, status);

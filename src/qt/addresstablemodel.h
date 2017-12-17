@@ -7,6 +7,7 @@
 
 #include <QAbstractTableModel>
 #include <QStringList>
+#include "../script/ismine.h"
 
 class AddressTablePriv;
 class WalletModel;
@@ -87,7 +88,7 @@ private:
 public Q_SLOTS:
     /* Update address list from core.
      */
-    void updateEntry(const QString &address, const QString &label, bool isMine, const QString &purpose, int status);
+    void updateEntry(const QString &address, const QString &label, isminetype isMine, const QString &purpose, int status);
 
     friend class AddressTablePriv;
 };

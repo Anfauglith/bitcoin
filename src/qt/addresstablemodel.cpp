@@ -51,7 +51,7 @@ struct AddressTableEntryLessThan
 };
 
 /* Determine address type from address purpose */
-static AddressTableEntry::Type translateTransactionType(const QString &strPurpose, bool isMine)
+static AddressTableEntry::Type translateTransactionType(const QString &strPurpose, isminetype isMine)
 {
     AddressTableEntry::Type addressType = AddressTableEntry::Hidden;
     // "refund" addresses aren't shown, and change addresses aren't in mapAddressBook at all.
@@ -60,7 +60,10 @@ static AddressTableEntry::Type translateTransactionType(const QString &strPurpos
     else if (strPurpose == "receive")
         addressType = AddressTableEntry::Receiving;
     else if (strPurpose == "unknown" || strPurpose == "") // if purpose not set, guess
-        addressType = (isMine ? AddressTableEntry::Receiving : AddressTableEntry::Sending);
+        addressType = (isMine & ISMINE_SPENDABLE ? AddressTableEntry::Receiving : AddressTableEntry::Sending);
+        // Watch-only addresses are not safe to show in receiving addresses, because people might
+        // unknowingly send funds to that address. We should not hide watch-only addresses completely,
+        // they might be useful in the address book, so show them as sending addresses.
     return addressType;
 }
 
@@ -83,7 +86,7 @@ public:
             for (const std::pair<CTxDestination, CAddressBookData>& item : wallet->mapAddressBook)
             {
                 const CIoPAddress& address = item.first;
-                bool fMine = IsMine(*wallet, address.Get());
+                isminetype fMine = IsMine(*wallet, address.Get());
                 AddressTableEntry::Type addressType = translateTransactionType(
                         QString::fromStdString(item.second.purpose), fMine);
                 const std::string& strName = item.second.name;
@@ -98,7 +101,7 @@ public:
         qSort(cachedAddressTable.begin(), cachedAddressTable.end(), AddressTableEntryLessThan());
     }
 
-    void updateEntry(const QString &address, const QString &label, bool isMine, const QString &purpose, int status)
+    void updateEntry(const QString &address, const QString &label, isminetype isMine, const QString &purpose, int status)
     {
         // Find address / label in model
         QList<AddressTableEntry>::iterator lower = qLowerBound(
@@ -335,7 +338,7 @@ QModelIndex AddressTableModel::index(int row, int column, const QModelIndex &par
 }
 
 void AddressTableModel::updateEntry(const QString &address,
-        const QString &label, bool isMine, const QString &purpose, int status)
+        const QString &label, isminetype isMine, const QString &purpose, int status)
 {
     // Update address book model from iop core
     priv->updateEntry(address, label, isMine, purpose, status);
