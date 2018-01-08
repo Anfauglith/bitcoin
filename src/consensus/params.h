@@ -68,6 +68,7 @@ struct Params {
     int64_t nPowTargetTimespan;
     int64_t blocktimeAdjustmentHeight;
     int64_t blocktimeReductionFactor;
+    int64_t halvingAdjustment;
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;

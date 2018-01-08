@@ -1045,7 +1045,8 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
-    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    int halvings = (nHeight + consensusParams.halvingAdjustment) / consensusParams.nSubsidyHalvingInterval; 
+    // first halving needs to happen earlier to stay under 21 million coins
 
     if (nHeight >= consensusParams.blocktimeAdjustmentHeight) {
         halvings /= consensusParams.blocktimeReductionFactor;
@@ -1062,7 +1063,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     // } else if (nHeight < consensusParams.nPowSubsidyIncreaseHeight) {
 	// 	nSubsidy = 2 * COIN; //this code line to be removed after beta release. We are forcing 1 IoP per block during this phase. Then will be 50 coins per block.
     } else if (nHeight >= consensusParams.blocktimeAdjustmentHeight){
-        nSubsidy = 50 * COIN * consensusParams.blocktimeReductionFactor;
+        nSubsidy = 50 * COIN / consensusParams.blocktimeReductionFactor;
     } else {
         nSubsidy = 50 * COIN;
     }

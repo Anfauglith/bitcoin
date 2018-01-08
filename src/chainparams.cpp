@@ -78,6 +78,7 @@ public:
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.blocktimeAdjustmentHeight = 60480;
         consensus.blocktimeReductionFactor = 10;
+        consensus.halvingAdjustment = 2100000/5 - 50400*4/5 + (60480 - 50400)*45/5; // This is to adjust the first halving interval so we stay below 21 million coins
         /* **** IOP CHANGE //
         IoP Chain uses the coinbase content to store the miner signature, so we can not enforce BIP34 in its current form.
         So deactivate the check for BIP34 completely
