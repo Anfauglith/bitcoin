@@ -1047,10 +1047,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
     int halvings = (nHeight + consensusParams.halvingAdjustment) / consensusParams.nSubsidyHalvingInterval; 
     // first halving needs to happen earlier to stay under 21 million coins
-
-    if (nHeight >= consensusParams.blocktimeAdjustmentHeight) {
-        halvings /= consensusParams.blocktimeReductionFactor;
-    }
+    // we are definitely changing block time before the first halving, so no need to account for earlier times
 
     // Force block reward to zero when right shift is undefined.
     if (halvings >= 64)
@@ -1059,16 +1056,15 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     /* IoP CHANGE */
     CAmount nSubsidy;
 	if (nHeight == 1) {
-		nSubsidy = 2100000 * COIN;
-    // } else if (nHeight < consensusParams.nPowSubsidyIncreaseHeight) {
-	// 	nSubsidy = 2 * COIN; //this code line to be removed after beta release. We are forcing 1 IoP per block during this phase. Then will be 50 coins per block.
-    } else if (nHeight >= consensusParams.blocktimeAdjustmentHeight){
-        nSubsidy = 50 * COIN / consensusParams.blocktimeReductionFactor;
+		nSubsidy = consensusParams.fermatPremine * COIN; // 2.1 million IOP
+    } else if (nHeight < consensusParams.blocktimeAdjustmentHeight){
+        nSubsidy = consensusParams.previousSubsidy * COIN; // 50 IOP
+        // These were not always used, as we had only 1 IOP per block in beta phase (plus CCs)
     } else {
-        nSubsidy = 50 * COIN;
+        nSubsidy = consensusParams.adjustedSubsidy * COIN ; // 5 IOP
     }
 
-    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // Subsidy is cut in half every 2,100,000 blocks which will occur approximately every 4 years.
     nSubsidy >>= halvings;
     return nSubsidy;
 }

@@ -52,8 +52,8 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
         return pindexLast->nBits;
 
     int64_t targetTimespan = params.nPowTargetTimespan;
-    if (pindexLast->nHeight >= params.blocktimeAdjustmentHeight - 1) {
-        targetTimespan /= params.blocktimeReductionFactor;
+    if (pindexLast->nHeight < params.blocktimeAdjustmentHeight - 1) { // below block time adjustment
+        targetTimespan *= params.blocktimeReductionFactor; // make window longer
     }
 
     // Limit adjustment step

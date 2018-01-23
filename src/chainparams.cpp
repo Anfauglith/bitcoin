@@ -75,15 +75,16 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
+        consensus.blocktimeReductionFactor = 10;
         consensus.fermatPremine = 2100000;
         consensus.betaSubsidy = 1;
         consensus.totalCCAdjustment = 3030; // Calculated to get total supply strictly smaller than 21 million coins. Total CC Payout was 3031.96, integer division takes care of the difference
         consensus.subsidyChangeHeight = 50400;
-        consensus.standardSubsidy = 50;
-        consensus.nSubsidyHalvingInterval = 210000;
+        consensus.previousSubsidy = 50;
+        consensus.nSubsidyHalvingInterval = 2100000;
         consensus.blocktimeAdjustmentHeight = 60480;
-        consensus.blocktimeReductionFactor = 10;
-        consensus.adjustedSubsidy = consensus.standardSubsidy / consensus.blocktimeReductionFactor;
+
+        consensus.adjustedSubsidy = consensus.previousSubsidy / consensus.blocktimeReductionFactor;
         consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
                                        - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
                                        + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
@@ -99,12 +100,12 @@ public:
         // consensus.BIP65Height = 0; // always enforce BIP 65 and BIP 66
         // consensus.BIP66Height = 0; 
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60 / consensus.blocktimeReductionFactor; // 1.4 days
+        consensus.nPowTargetSpacing = 10 * 60 / consensus.blocktimeReductionFactor ; // 1 minute
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
-        consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
-        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nRuleChangeActivationThreshold = 1916 * consensus.blocktimeReductionFactor; // 95% of 2016 * consensus.blocktimeReductionFactor 
+        consensus.nMinerConfirmationWindow = 2016 * consensus.blocktimeReductionFactor; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
@@ -199,9 +200,22 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 210000;
-        consensus.blocktimeAdjustmentHeight = 16128;
         consensus.blocktimeReductionFactor = 10;
+        consensus.fermatPremine = 2100000;
+        consensus.betaSubsidy = 1;
+        consensus.totalCCAdjustment = 3030; // Calculated to get total supply strictly smaller than 21 million coins. Total CC Payout was 3031.96, integer division takes care of the difference
+        consensus.subsidyChangeHeight = 50400;
+        consensus.previousSubsidy = 50;
+        consensus.nSubsidyHalvingInterval = 2100000;
+        consensus.blocktimeAdjustmentHeight = 16128;
+
+        consensus.adjustedSubsidy = consensus.previousSubsidy / consensus.blocktimeReductionFactor;
+        consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
+                                       - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
+                                       + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
+                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.standardSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
+                                      )/ consensus.adjustedSubsidy; // All this is to adjust the first halving interval so we stay just very slightly below 21 million coins
+                                    
         /* **** IOP CHANGE //
         IoP Chain uses the coinbase content to store the miner signature, so we can not enforce BIP34 in its current form.
         So deactivate the check for BIP34 completely
@@ -211,12 +225,12 @@ public:
         // consensus.BIP65Height = 0; // always enforce BIP 65 and BIP 66
         // consensus.BIP66Height = 0; 
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60 / consensus.blocktimeReductionFactor; // 1.4 days
+        consensus.nPowTargetSpacing = 10 * 60 / consensus.blocktimeReductionFactor; // 1 minute
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
-        consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
-        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nRuleChangeActivationThreshold = 1512 * consensus.blocktimeReductionFactor; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 2016 * consensus.blocktimeReductionFactor; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
@@ -303,8 +317,23 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         consensus.nSubsidyHalvingInterval = 150;
-        consensus.blocktimeAdjustmentHeight = 3000;
         consensus.blocktimeReductionFactor = 10;
+        consensus.fermatPremine = 2100000;
+        consensus.betaSubsidy = 1;
+        consensus.totalCCAdjustment = 3030; // Calculated to get total supply strictly smaller than 21 million coins. Total CC Payout was 3031.96, integer division takes care of the difference
+        consensus.subsidyChangeHeight = 50400;
+        consensus.previousSubsidy = 50;
+        consensus.nSubsidyHalvingInterval = 2100000;
+        consensus.blocktimeAdjustmentHeight = 4032;
+
+        consensus.adjustedSubsidy = consensus.previousSubsidy / consensus.blocktimeReductionFactor;
+        consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
+                                       - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
+                                       + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
+                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.standardSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
+                                      )/ consensus.adjustedSubsidy; // All this is to adjust the first halving interval so we stay just very slightly below 21 million coins
+                                 
+        
         /* **** IOP CHANGE //
         IoP Chain uses the coinbase content to store the miner signature, so we can not enforce BIP34 in its current form.
         So deactivate the check for BIP34 completely
@@ -314,12 +343,12 @@ public:
         // consensus.BIP65Height = 0; // always enforce BIP 65 and BIP 66
         // consensus.BIP66Height = 0; 
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60 / consensus.blocktimeReductionFactor; // 1.4 days
+        consensus.nPowTargetSpacing = 10 * 60 / consensus.blocktimeReductionFactor;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
-        consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
-        consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
+        consensus.nRuleChangeActivationThreshold = 108 * consensus.blocktimeReductionFactor; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 144 * consensus.blocktimeReductionFactor; // Faster than normal for regtest (1440 instead of 20160)
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;

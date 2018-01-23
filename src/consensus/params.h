@@ -69,9 +69,19 @@ struct Params {
     int64_t blocktimeAdjustmentHeight;
     int64_t blocktimeReductionFactor;
     int64_t halvingAdjustment;
+    int64_t fermatPremine;
+    int64_t betaSubsidy;
+    int64_t totalCCAdjustment;
+    int64_t subsidyChangeHeight;
+    int64_t previousSubsidy;
+    int64_t adjustedSubsidy;
+                                    
+
+
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
+
 
 
 
