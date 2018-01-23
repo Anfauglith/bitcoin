@@ -75,10 +75,21 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
+        consensus.fermatPremine = 2100000;
+        consensus.betaSubsidy = 1;
+        consensus.totalCCAdjustment = 3030; // Calculated to get total supply strictly smaller than 21 million coins. Total CC Payout was 3031.96, integer division takes care of the difference
+        consensus.subsidyChangeHeight = 50400;
+        consensus.standardSubsidy = 50;
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.blocktimeAdjustmentHeight = 60480;
         consensus.blocktimeReductionFactor = 10;
-        consensus.halvingAdjustment = 2100000/5 - 50400*4/5 + (60480 - 50400)*45/5; // This is to adjust the first halving interval so we stay below 21 million coins
+        consensus.adjustedSubsidy = consensus.standardSubsidy / consensus.blocktimeReductionFactor;
+        consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
+                                       - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
+                                       + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
+                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.standardSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
+                                      )/ consensus.adjustedSubsidy; // All this is to adjust the first halving interval so we stay just very slightly below 21 million coins
+                                    
         /* **** IOP CHANGE //
         IoP Chain uses the coinbase content to store the miner signature, so we can not enforce BIP34 in its current form.
         So deactivate the check for BIP34 completely
