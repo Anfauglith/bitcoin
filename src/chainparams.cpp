@@ -82,13 +82,13 @@ public:
         consensus.subsidyChangeHeight = 50400;
         consensus.previousSubsidy = 50;
         consensus.nSubsidyHalvingInterval = 2100000;
-        consensus.blocktimeAdjustmentHeight = 60480;
+        consensus.blocktimeAdjustmentHeight = 80640;
 
         consensus.adjustedSubsidy = consensus.previousSubsidy / consensus.blocktimeReductionFactor;
         consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
                                        - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
                                        + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
-                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.standardSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
+                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.previousSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
                                       )/ consensus.adjustedSubsidy; // All this is to adjust the first halving interval so we stay just very slightly below 21 million coins
                                     
         /* **** IOP CHANGE //
@@ -213,7 +213,7 @@ public:
         consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
                                        - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
                                        + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
-                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.standardSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
+                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.previousSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
                                       )/ consensus.adjustedSubsidy; // All this is to adjust the first halving interval so we stay just very slightly below 21 million coins
                                     
         /* **** IOP CHANGE //
@@ -330,7 +330,7 @@ public:
         consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
                                        - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
                                        + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
-                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.standardSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
+                                       + (consensus.blocktimeAdjustmentHeight - consensus.subsidyChangeHeight) * (consensus.previousSubsidy - consensus.adjustedSubsidy) // adjust for additional coins during slow block time phase
                                       )/ consensus.adjustedSubsidy; // All this is to adjust the first halving interval so we stay just very slightly below 21 million coins
                                  
         
