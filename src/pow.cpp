@@ -51,10 +51,15 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
     if (params.fPowNoRetargeting)
         return pindexLast->nBits;
 
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+
     int64_t targetTimespan = params.nPowTargetTimespan;
+    
     if (pindexLast->nHeight < params.blocktimeAdjustmentHeight - 1) { // below block time adjustment
         targetTimespan *= params.blocktimeReductionFactor; // make window longer
-    }
+    } else if (pindexLast->nHeight == params.blocktimeAdjustmentHeight - 1) { // at block time adjustment force difficulty to minimum
+        return bnPowLimit.GetCompact();
+    } 
 
     // Limit adjustment step
     int64_t nActualTimespan = pindexLast->GetBlockTime() - nFirstBlockTime;
@@ -64,7 +69,6 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
         nActualTimespan = targetTimespan*4;
 
     // Retarget
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     arith_uint256 bnNew;
     bnNew.SetCompact(pindexLast->nBits);
     bnNew *= nActualTimespan;
