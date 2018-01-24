@@ -1978,7 +1978,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         
         std::string strAddress = cAddress.ToString();
         if (pminerwhitelist->IsCapEnabled()){
-            if (pminerwhitelist->hasExceededCap(strAddress)){
+            if (pminerwhitelist->hasReachedCap(strAddress)){
                 LogPrintf("Invalid coinbase transaction: Miner %s has exceeded the cap for this period.\n", strAddress);
                 return state.DoS(100, false, REJECT_INVALID, "bad-CAP-miner", false, "Miner has exceeded Cap.");
             }

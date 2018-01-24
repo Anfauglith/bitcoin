@@ -1863,7 +1863,7 @@ void MinerThread( std::shared_ptr<CReserveScript> coinbaseScript,
         try {
             /* before we start mining, let's make sure we withing the cap if the Miner Cap is enabled */
             if (pminerwhitelist->IsCapEnabled()){
-                while (pminerwhitelist->hasExceededCap(whitelistAddress.ToString())){
+                while (pminerwhitelist->hasReachedCap(whitelistAddress.ToString())){
                     LogPrintf("Miner %u: Miner cap exceeded. Waiting a minute to retry...\n", threadId);
                     MilliSleep(1000 * 60);
                 }

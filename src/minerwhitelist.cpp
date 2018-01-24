@@ -243,14 +243,14 @@ unsigned int CMinerWhitelistDB::GetAvgBlocksPerMiner() {
 unsigned int CMinerWhitelistDB::GetCap() {
     
     unsigned int factor = GetCapFactor();
-    unsigned int number = GetNumberOfWhitelistedMiners();
+    unsigned int number = GetNumberOfWhitelistedMiners(); // can never be zero for an uncorrupted database
 
-    if (chainActive.Height() < Params().GetConsensus().minerCapSystemChangeHeight)
-        return factor*(2016/number);
+    // if (chainActive.Height() < Params().GetConsensus().minerCapSystemChangeHeight)
+    //     return factor*(2016/number); // We don't need this, because the new rule is less restrictive
 
-    return (factor*2016)/number;
+    return (factor*2016)/number + 1; // allow one additional block to keep the network from stalling because of integer division. This block was previously allowed in the cap checking routine now calles hasReachedCap.
     
-    return 2016;
+    // return 2016;
 }
 
 
@@ -723,7 +723,7 @@ bool CMinerWhitelistDB::RewindBlock(unsigned int index) {
     return true;
 }
 
-bool CMinerWhitelistDB::hasExceededCap(std::string address) {
+bool CMinerWhitelistDB::hasReachedCap(std::string address) {
     if (Params().GetConsensus().minerWhiteListAdminAddress.count(address) || (Params().NetworkIDString() == "main" && chainActive.Height() < 38304 && address == "pGNcLNCavQLGXwXkVDwoHPCuQUBoXzJtPh"))
         return false;
     
@@ -733,11 +733,11 @@ bool CMinerWhitelistDB::hasExceededCap(std::string address) {
     
     // There has been a bug in the previous implementation that did not take the current block 
     // into account when counting the number of blocks mined. Fix these manually.
-    if (blocks == cap + 1 && chainActive.Height() < Params().GetConsensus().minerCapSystemChangeHeight && address == getMinerforBlock(chainActive.Height()) ) {
-        LogPrintf("MinerCap: %s has exceeded cap. Exception because of two consecutive blocks from the same miner.\n", address);
+    if (blocks == cap && chainActive.Height() < Params().GetConsensus().minerCapSystemChangeHeight && address == getMinerforBlock(chainActive.Height()) ) {
+        LogPrintf("MinerCap: %s has reached cap. Exception because of two consecutive blocks from the same miner.\n", address);
         return false;
-    } else if (blocks > cap) {
-        LogPrintf("MinerCap: %s has exceeded cap. Not accepting Block.\n", address);
+    } else if (blocks >= cap) {
+        LogPrintf("MinerCap: %s has reached cap. Not accepting Block.\n", address);
         return true;
     } else {
         return false;

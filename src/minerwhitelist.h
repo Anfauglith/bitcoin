@@ -46,7 +46,7 @@ public:
     unsigned int GetTotalBlocks(std::string address);
     unsigned int GetBlocksInWindow(std::string address);
     unsigned int GetWindowStart(unsigned int height);
-    bool hasExceededCap(std::string address);
+    bool hasReachedCap(std::string address);
 
     // Managing Cap
 
