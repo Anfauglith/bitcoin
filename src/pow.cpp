@@ -57,8 +57,9 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
     
     if (pindexLast->nHeight < params.blocktimeAdjustmentHeight - 1) { // below block time adjustment
         targetTimespan *= params.blocktimeReductionFactor; // make window longer
-    } else if (pindexLast->nHeight == params.blocktimeAdjustmentHeight - 1) { // at block time adjustment force difficulty to minimum
-        return bnPowLimit.GetCompact();
+    } else if (pindexLast->nHeight == params.blocktimeAdjustmentHeight - 1) { // at block time adjustment 
+        return bnPowLimit.GetCompact(); // force difficulty to minimum and start over
+        // targetTimespan /= 2; // relax difficulty by an additional factor 2
     } 
 
     // Limit adjustment step

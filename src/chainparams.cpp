@@ -81,10 +81,11 @@ public:
         consensus.totalCCAdjustment = 3030; // Calculated to get total supply strictly smaller than 21 million coins. Total CC Payout was 3031.96, integer division takes care of the difference
         consensus.subsidyChangeHeight = 50400;
         consensus.previousSubsidy = 50;
-        consensus.nSubsidyHalvingInterval = 2100000;
-        consensus.blocktimeAdjustmentHeight = 80640;
+        consensus.nSubsidyHalvingInterval = 1050000;
+        consensus.blocktimeAdjustmentHeight = 80640; // this should always be a multiple of 2016
 
-        consensus.adjustedSubsidy = consensus.previousSubsidy / consensus.blocktimeReductionFactor;
+
+        consensus.adjustedSubsidy = 10;
         consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
                                        - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
                                        + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
@@ -207,10 +208,11 @@ public:
         consensus.totalCCAdjustment = 3030; // Calculated to get total supply strictly smaller than 21 million coins. Total CC Payout was 3031.96, integer division takes care of the difference
         consensus.subsidyChangeHeight = 50400;
         consensus.previousSubsidy = 50;
-        consensus.nSubsidyHalvingInterval = 2100000;
-        consensus.blocktimeAdjustmentHeight = 16128;
+        consensus.nSubsidyHalvingInterval = 1050000;
+        consensus.blocktimeAdjustmentHeight = 16128; // this should always be a multiple of 2016
 
-        consensus.adjustedSubsidy = consensus.previousSubsidy / consensus.blocktimeReductionFactor;
+
+        consensus.adjustedSubsidy = 10;
         consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
                                        - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
                                        + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
@@ -324,10 +326,10 @@ public:
         consensus.totalCCAdjustment = 3030; // Calculated to get total supply strictly smaller than 21 million coins. Total CC Payout was 3031.96, integer division takes care of the difference
         consensus.subsidyChangeHeight = 50400;
         consensus.previousSubsidy = 50;
-        consensus.nSubsidyHalvingInterval = 2100000;
-        consensus.blocktimeAdjustmentHeight = 4032;
+        consensus.nSubsidyHalvingInterval = 1050000;
+        consensus.blocktimeAdjustmentHeight = 4032; // this should always be a multiple of 2016
 
-        consensus.adjustedSubsidy = consensus.previousSubsidy / consensus.blocktimeReductionFactor;
+        consensus.adjustedSubsidy = 10;
         consensus.halvingAdjustment = (consensus.fermatPremine // adjust for premine
                                        - consensus.subsidyChangeHeight * (consensus.adjustedSubsidy - consensus.betaSubsidy) // adjust for lost coins due to low block reward in beta phase
                                        + consensus.totalCCAdjustment // adjust for additional coins due to CC funding in beta phase
